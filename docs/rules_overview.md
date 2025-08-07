@@ -1,4 +1,19 @@
-# 15 Rules Overview
+# 16 Rules Overview
+
+## AddArgumentsRector
+
+Adds arguments to a static method call
+
+:wrench: **configure it!**
+
+- class: [`Contao\Rector\Rector\AddArgumentsRector`](../src/Rector/AddArgumentsRector.php)
+
+```diff
+-\Contao\Input::stripTags(null, '');
++\Contao\Input::stripTags(null, '', \Contao\Config::get('allowedAttributes'));
+```
+
+<br>
 
 ## ConstantToClassConstantRector
 
