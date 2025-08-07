@@ -2,9 +2,17 @@
 
 declare(strict_types=1);
 
+use Contao\Config;
+use Contao\Input;
+use Contao\Rector\Rector\AddArgumentsRector;
 use Contao\Rector\Rector\RemoveMethodCallRector;
+use Contao\Rector\ValueObject\AddArguments;
 use Contao\Rector\ValueObject\RemoveMethodCall;
 use Contao\StringUtil;
+use PhpParser\Node\Arg;
+use PhpParser\Node\Expr\StaticCall;
+use PhpParser\Node\Name\FullyQualified;
+use PhpParser\Node\Scalar\String_;
 use Rector\Config\RectorConfig;
 use Rector\Renaming\Rector\FuncCall\RenameFunctionRector;
 use Rector\Renaming\Rector\Name\RenameClassRector;
@@ -30,6 +38,12 @@ return static function (RectorConfig $rectorConfig): void {
     $rectorConfig->ruleWithConfiguration(RemoveMethodCallRector::class, [
         new RemoveMethodCall(StringUtil::class, 'toXhtml'),
         new RemoveMethodCall(StringUtil::class, 'toHtml5'),
+    ]);
+
+    $rectorConfig->ruleWithConfiguration(AddArgumentsRector::class, [
+        new AddArguments(Input::class, 'stripTags', [
+            new StaticCall(new FullyQualified(Config::class), 'get', [new Arg(new String_('allowedAttributes'))])
+        ]),
     ]);
 
     // TODO: remove use of nl2br_pre
