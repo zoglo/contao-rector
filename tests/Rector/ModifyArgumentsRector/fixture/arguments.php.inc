@@ -5,8 +5,10 @@ class Foo extends Controller
     public function bar()
     {
         \Contao\Input::stripTags(null, '');
-        Foo::bar('21');
-        Foo::baz('3');
+        Foo::baz(1, 1);
+        Foo::quux(4, 8, 16);
+        Foo::corge(true);
+        Foo::grault(true, brain: 'goldfish');
     }
 }
 ?>
@@ -18,8 +20,10 @@ class Foo extends Controller
     public function bar()
     {
         \Contao\Input::stripTags(null, '', \Contao\Config::get('allowedAttributes'));
-        Foo::bar('21', 'baz', 'qux');
-        Foo::baz('3', 'qux', 'quux', 'corge', 'grault', 'garply', 'waldo', 'fred', 'plugh', 'xyzzy', 'thud');
+        Foo::baz(21, 3, 90);
+        Foo::quux(4, 8, 15, 16, 23, 42);
+        Foo::corge(true, brain: 'disabledfish');
+        Foo::grault(true, brain: 'aschempp');
     }
 }
 ?>

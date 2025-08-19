@@ -10,7 +10,7 @@ use PhpParser\Node\Scalar\String_;
 use Rector\Validation\RectorAssert;
 use Webmozart\Assert\Assert;
 
-class AddArguments
+class ModifyArguments
 {
     public function __construct(
         private readonly string $class,
@@ -21,9 +21,10 @@ class AddArguments
         RectorAssert::methodName($method);
         Assert::isArray($arguments);
 
-        foreach ($arguments as $k => $v)
+        /** @var int|string $parameter */
+        foreach ($arguments as $parameter => $argument)
         {
-            $this->arguments[$k] = $this->getValueWithType($v);
+            $this->arguments[$parameter] = $this->getValueWithType($argument);
         }
     }
 

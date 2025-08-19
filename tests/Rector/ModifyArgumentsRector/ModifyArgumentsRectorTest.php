@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Contao\Rector\Tests\Rector\AddArgumentsRector;
+namespace Contao\Rector\Tests\Rector\ModifyArgumentsRector;
 
 use Iterator;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Rector\Testing\PHPUnit\AbstractRectorTestCase;
 
-final class AddArgumentsRectorTest extends AbstractRectorTestCase
+final class ModifyArgumentsRectorTest extends AbstractRectorTestCase
 {
     #[DataProvider('provideData')]
     public function test(string $filePath): void

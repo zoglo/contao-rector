@@ -6,7 +6,7 @@ namespace Contao\Rector\Rector;
 
 use Contao\Config;
 use Contao\Input;
-use Contao\Rector\ValueObject\AddArguments;
+use Contao\Rector\ValueObject\ModifyArguments;
 use PhpParser\Node;
 use PhpParser\Node\Arg;
 use PhpParser\Node\Expr\StaticCall;
@@ -19,16 +19,16 @@ use Symplify\RuleDocGenerator\ValueObject\CodeSample\ConfiguredCodeSample;
 use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
 use Webmozart\Assert\Assert;
 
-final class AddArgumentsRector extends AbstractRector implements ConfigurableRectorInterface, DocumentedRuleInterface
+final class ModifyArgumentsRector extends AbstractRector implements ConfigurableRectorInterface, DocumentedRuleInterface
 {
     /**
-     * @var array<AddArguments>
+     * @var array<ModifyArguments>
      */
     private array $configuration;
 
     public function configure(array $configuration): void
     {
-        Assert::allIsAOf($configuration, AddArguments::class);
+        Assert::allIsAOf($configuration, ModifyArguments::class);
         $this->configuration = $configuration;
     }
 
@@ -43,7 +43,7 @@ CODE_BEFORE
                 <<<'CODE_AFTER'
 \Contao\Input::stripTags(null, '', \Contao\Config::get('allowedAttributes'));
 CODE_AFTER,
-                [new AddArguments(Input::class, 'stripTags', [new StaticCall(new FullyQualified(Config::class), 'get', [new Arg(new String_('allowedAttributes'))])])]
+                [new ModifyArguments(Input::class, 'stripTags', [2 => new StaticCall(new FullyQualified(Config::class), 'get', [new Arg(new String_('allowedAttributes'))])])]
             ),
         ]);
     }
@@ -67,9 +67,26 @@ CODE_AFTER,
                 continue;
             }
 
-            foreach ($configuration->getArguments() as $arg)
+            foreach ($configuration->getArguments() as $parameter => $argument)
             {
-                $node->args[] = new Arg($arg);
+                if (is_int($parameter))
+                {
+                    $node->args[$parameter] = new Arg($argument);
+                }
+                elseif (is_string($parameter))
+                {
+                    /** @var Arg $value */
+                    foreach ($node->args as $key => $value)
+                    {
+                        if ($this->getName($value) === $parameter)
+                        {
+                            $node->args[$key]->value = $argument;
+                            break 2;
+                        }
+                    }
+
+                    $node->args[] = new Arg($argument, false, false, [], new Node\Identifier($parameter));
+                }
             }
         }
 

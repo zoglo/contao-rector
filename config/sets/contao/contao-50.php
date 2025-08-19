@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 use Contao\Config;
 use Contao\Input;
-use Contao\Rector\Rector\AddArgumentsRector;
+use Contao\Rector\Rector\ModifyArgumentsRector;
 use Contao\Rector\Rector\RemoveMethodCallRector;
-use Contao\Rector\ValueObject\AddArguments;
+use Contao\Rector\ValueObject\ModifyArguments;
 use Contao\Rector\ValueObject\RemoveMethodCall;
 use Contao\StringUtil;
 use PhpParser\Node\Arg;
@@ -40,9 +40,9 @@ return static function (RectorConfig $rectorConfig): void {
         new RemoveMethodCall(StringUtil::class, 'toHtml5'),
     ]);
 
-    $rectorConfig->ruleWithConfiguration(AddArgumentsRector::class, [
-        new AddArguments(Input::class, 'stripTags', [
-            new StaticCall(new FullyQualified(Config::class), 'get', [new Arg(new String_('allowedAttributes'))])
+    $rectorConfig->ruleWithConfiguration(ModifyArgumentsRector::class, [
+        new ModifyArguments(Input::class, 'stripTags', [
+            2 => new StaticCall(new FullyQualified(Config::class), 'get', [new Arg(new String_('allowedAttributes'))])
         ]),
     ]);
 
