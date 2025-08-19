@@ -1,20 +1,5 @@
 # 16 Rules Overview
 
-## AddArgumentsRector
-
-Adds arguments to a static method call
-
-:wrench: **configure it!**
-
-- class: [`Contao\Rector\Rector\AddArgumentsRector`](../src/Rector/AddArgumentsRector.php)
-
-```diff
--\Contao\Input::stripTags(null, '');
-+\Contao\Input::stripTags(null, '', \Contao\Config::get('allowedAttributes'));
-```
-
-<br>
-
 ## ConstantToClassConstantRector
 
 Fixes deprecated constants to class constants
@@ -178,6 +163,21 @@ Fixes deprecated TL_MODE constant to service call
 ```diff
 -$isBackend = TL_MODE === 'BE';
 +$isBackend = \Contao\System::getContainer()->get('contao.routing.scope_matcher')->isBackendRequest(\Contao\System::getContainer()->get('request_stack')->getCurrentRequest() ?? \Symfony\Component\HttpFoundation\Request::create(''));
+```
+
+<br>
+
+## ModifyArgumentsRector
+
+Adds arguments to a static method call
+
+:wrench: **configure it!**
+
+- class: [`Contao\Rector\Rector\ModifyArgumentsRector`](../src/Rector/ModifyArgumentsRector.php)
+
+```diff
+-\Contao\Input::stripTags(null, '');
++\Contao\Input::stripTags(null, '', \Contao\Config::get('allowedAttributes'));
 ```
 
 <br>
