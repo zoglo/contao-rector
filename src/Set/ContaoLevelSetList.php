@@ -30,4 +30,14 @@ final class ContaoLevelSetList
      * @var string
      */
     final public const UP_TO_CONTAO_53 = __DIR__ . '/../../config/sets/contao/level/up-to-contao-53.php';
+
+    /**
+     * @var string
+     */
+    final public const UP_TO_CONTAO_55 = __DIR__ . '/../../config/sets/contao/level/up-to-contao-55.php';
+
+    /**
+     * @var string
+     */
+    final public const UP_TO_CONTAO_57 = __DIR__ . '/../../config/sets/contao/level/up-to-contao-57.php';
 }
