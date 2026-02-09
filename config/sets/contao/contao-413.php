@@ -25,6 +25,7 @@ use Contao\Rector\Rector\ContainerSessionToRequestStackSessionRector;
 use Contao\Rector\Rector\InsertTagsServiceRector;
 use Contao\Rector\Rector\LegacyFrameworkCallToServiceCallRector;
 use Contao\Rector\Rector\ReplaceNestedArrayItemRector;
+use Contao\Rector\Rector\SystemCountriesToServiceRector;
 use Contao\Rector\Rector\SystemLanguagesToServiceRector;
 use Contao\Rector\ValueObject\ConstantToServiceCall;
 use Contao\Rector\ValueObject\LegacyFrameworkCallToServiceCall;
@@ -99,6 +100,7 @@ return static function (RectorConfig $rectorConfig): void {
 
     // Contao 4.12
     $rectorConfig->rule(SystemLanguagesToServiceRector::class);
+    $rectorConfig->rule(SystemCountriesToServiceRector::class);
     $rectorConfig->ruleWithConfiguration(ReplaceNestedArrayItemRector::class, [
         new ReplaceNestedArrayItemValue(
             'TL_DCA.*.fields.*.options',
